@@ -8,19 +8,35 @@ type Data = {
   name: string;
 };
 
-const customers: any = {};
+let customers: any = {};
 let port = 10000;
+
+// this will stop all containers after our service is down
+// process.on("exit", function () {
+
+//   console.log('before exit');
+  
+//   Object.keys(customers).forEach((email) => {
+//     console.log(`stopping ${customers[email].port}`);
+    
+//     spawn("docker", ["rm", "--force", `budibase-${customers[email].port}`]);
+//   });
+// });
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
   if (req.body.type == "login") {
+
+    console.log({customers});
+    
+
     if (!customers[req.body.email]) {
       return res.status(400).json({ message: `Please register` });
     }
 
-    if (customers[req.body.email].password != req.body.password) {
+    if (customers[req.body.email].password !== req.body.password) {
       return res.status(400).json({ message: `invalid credentials` });
     }
 
@@ -38,6 +54,8 @@ export default async function handler(
 
   port++;
   customers[req.body.email] = { password: req.body.password, port };
+  console.log({customers});
+  
 
   await startDocker(req.body.email, req.body.password, port);
 
@@ -125,7 +143,7 @@ const startDocker = (email: string, password: string, port: number) => {
     });
 
     ls.stdout.on("error", (error) => {
-      console.log(error);
+      console.log(error.message);
 
       resolve(0);
     });
