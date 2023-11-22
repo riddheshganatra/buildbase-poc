@@ -22,7 +22,7 @@ export default function Login() {
       console.log("response.data", response.data);
 
       if (response.data.port) {
-        window.location.href = `http://localhost:${
+        window.location.href = `http://146.190.162.194:${
           response.data.port
         }/builder/auth/login?email=${encodeURIComponent(
           email

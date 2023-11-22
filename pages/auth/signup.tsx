@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import styles from "../../styles/login.module.css";
-import cx from "classnames";
-import axios from "axios";
-import Link from "next/link";
 import Loader from "@/components/loader";
+import axios from "axios";
+import cx from "classnames";
+import Link from "next/link";
+import { useState } from "react";
+import styles from "../../styles/login.module.css";
 // const bootstrap = require("bootstrap");
 // import bootstrap from "bootstrap";
 
@@ -26,7 +26,7 @@ export default function SignUp() {
       console.log("response.data", response.data);
 
       if (response.data.port) {
-        window.location.href = `http://localhost:${response.data.port}/builder/auth/login`;
+        window.location.href = `http://146.190.162.194:${response.data.port}/builder/auth/login`;
       }
     } catch (error: any) {
       setErrormessage(error?.response.data?.message || error.message);

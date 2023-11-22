@@ -82,7 +82,7 @@ const startDocker = (email: string, password: string, port: number) => {
       // todo: setinterval with health status check of docker container
       setTimeout(async () => {
         const registerUserOnBudiBase = await axios.post(
-          `http://localhost:${port}/api/global/users/init`,
+          `http://146.190.162.194:${port}/api/global/users/init`,
           {
             email,
             password,
