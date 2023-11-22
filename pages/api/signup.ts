@@ -1,8 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import axios from "axios";
 import { spawn } from "child_process";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { resolve } from "path";
-import axios from "axios";
 
 type Data = {
   name: string;
@@ -15,10 +14,10 @@ let port = 10000;
 // process.on("exit", function () {
 
 //   console.log('before exit');
-  
+
 //   Object.keys(customers).forEach((email) => {
 //     console.log(`stopping ${customers[email].port}`);
-    
+
 //     spawn("docker", ["rm", "--force", `budibase-${customers[email].port}`]);
 //   });
 // });
@@ -28,9 +27,7 @@ export default async function handler(
   res: NextApiResponse<any>
 ) {
   if (req.body.type == "login") {
-
-    console.log({customers});
-    
+    console.log({ customers });
 
     if (!customers[req.body.email]) {
       return res.status(400).json({ message: `Please register` });
@@ -54,8 +51,7 @@ export default async function handler(
 
   port++;
   customers[req.body.email] = { password: req.body.password, port };
-  console.log({customers});
-  
+  console.log({ customers });
 
   await startDocker(req.body.email, req.body.password, port);
 
@@ -75,7 +71,7 @@ const startDocker = (email: string, password: string, port: number) => {
       // `./dockerdata/${port}:/data`,
       "--restart",
       "unless-stopped",
-      "budibase/budibase:latest",
+      "custom-budibase",
     ]);
 
     ls.stdout.on("end", () => {
